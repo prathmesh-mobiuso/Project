@@ -1,0 +1,164 @@
+import java.util.*;
+
+class Game_Board {
+	
+	private String Board [][]={{"-","-","-"},{"-","-","-"},{"-","-","-"}};
+	static String Winner;
+	String turn;
+	int counter=0;
+	
+	public void toss(String s) {
+		turn=s;
+	}
+	
+	public void placeSymbol(int row,int column) {
+		
+			try {
+				if(!(row>=0 && row<3 && column>=0 && column<3 )) {
+					System.out.println("You entered wrong row or column number .");
+				}
+			}
+			catch(Exception e) {
+				System.out.println("Invalid entry...");
+			}
+			
+			
+			if(Board[row][column]=="-"){
+				
+				Board[row][column]=turn;
+				counter++;
+				
+				if(turn.equals("X"))
+				{
+					turn="O";
+				}
+				else
+				{
+					turn="X";
+				}	
+				
+				
+				printBoard();
+				Winner=CheckWinner();
+			}
+			else
+			{
+				System.out.println("The Slot is already taken...Please enter again");
+			}
+		
+	}
+	
+	
+	public void printBoard() {
+		System.out.println("  "+Board[0][0]+"  |  "+Board[0][1]+"  |  "+Board[0][2]);
+		System.out.println("-----|-----|-----");
+		System.out.println("  "+Board[1][0]+"  |  "+Board[1][1]+"  |  "+Board[1][2]);
+		System.out.println("-----|-----|-----");
+		System.out.println("  "+Board[2][0]+"  |  "+Board[2][1]+"  |  "+Board[2][2]);
+	}
+
+	
+	private String CheckWinner() {
+		String str1="XXX";
+		String str2="OOO";
+		for(int i=1;i<=8;i++)
+		{
+			String result=null;
+			switch(i) {
+			
+			case 1: {
+				result=Board[0][0]+Board[0][1]+Board[0][2];
+				break;
+			}
+			case 2: {
+				result=Board[1][0]+Board[1][1]+Board[1][2];
+				break;
+			}
+			case 3: {
+				result=Board[2][0]+Board[2][1]+Board[2][2];
+				break;
+			}
+			case 4: {
+				result=Board[0][0]+Board[1][0]+Board[2][0];
+				break;
+			}
+			case 5: {
+				result=Board[0][1]+Board[1][1]+Board[2][1];
+				break;
+			}
+				
+			case 6: {
+				result=Board[0][2]+Board[1][2]+Board[2][2];
+				break;
+			}
+			case 7: {
+				result=Board[0][0]+Board[1][1]+Board[2][2];
+				break;
+			}
+			case 8: {
+				result=Board[0][2]+Board[1][1]+Board[2][0];
+				break;
+			}
+			}
+			
+			if(result.equals(str1)) {
+				return "X";
+			}
+			else if(result.equals(str2)) {
+				return "O";
+			}
+			
+			if(counter==9) {
+				return "draw";
+			}
+		}
+		
+		System.out.println("Now its "+turn+" 's turn.. Enter the spot = ");
+		return null;
+		
+	}
+	
+	public void displayWinner() {
+		if(Winner.equalsIgnoreCase("Draw")) {
+			System.out.println("Match is draw...Play again");
+		}
+		else
+		{
+			System.out.println("Congratulation,...."+Winner+" is the Winner...");
+		}
+	
+	}
+}
+
+
+
+
+
+public class Tic_Tac_Toe_Game {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		Game_Board newGame=new Game_Board();
+		
+		System.out.println("Enter your choise (X / O) = ");
+		String choise=sc.next();
+		int r,c;
+		newGame.toss(choise);
+		
+		System.out.println("Now "+choise+" 's will start the game.");
+		newGame.printBoard();
+		
+		while(newGame.Winner==null)  {
+			
+		System.out.println("Enter the row (1,2,3) = ");
+		r=sc.nextInt();
+		System.out.println("Enter the column (1,2,3) = ");
+		c=sc.nextInt();
+		
+		newGame.placeSymbol((r-1),(c-1));
+		}
+			
+		newGame.displayWinner();
+	}
+
+}
